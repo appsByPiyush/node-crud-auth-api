@@ -4,6 +4,7 @@ const userRoutes = require('./routes/user.routes');
 const authRoutes = require('./routes/auth.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
 const { errorHandler } = require('./middlewares/error.middleware');
+const { apiLimiter } = require('./middlewares/rateLimiter');
 
 app.use(express.json());
 app.get('/', (req,res)=>{
@@ -12,6 +13,7 @@ app.get('/', (req,res)=>{
 app.get('/api', (req,res)=>{
     res.status(200).json({ message: "Hello Api" });
 });
+app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
